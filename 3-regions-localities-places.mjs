@@ -24,6 +24,13 @@ import { readFile, readdir, writeFile } from 'node:fs/promises'
     'modificationDate'
   ]
 
+  const excludeFeatureCodes = [
+    'A',
+    'H.AIRS', 'H.ANCH', 'H.BNK', 'H.CNL', 'H.DCK', 'H.DCKB', 'H.DTCH'
+  ];
+
+  // Остановился на H.STMX.
+
   const alternativeNames = JSON.parse(await readFile('./output/alternative-names.json', { encoding: 'utf8' }))
   const countries = await readdir('./output/data')
   const cyrillicPattern = /^[\sа-яё-]+$/im
