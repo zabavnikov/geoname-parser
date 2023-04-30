@@ -24,9 +24,18 @@ import { readFile, readdir, writeFile } from 'node:fs/promises'
     'modificationDate'
   ]
 
-  const excludeFeatureCodes = [
-    'A',
-    'H.AIRS', 'H.ANCH', 'H.BNK', 'H.CNL', 'H.DCK', 'H.DCKB', 'H.DTCH'
+  const allowedFeatureCodes = [
+    'H.BAY', 'H.BOG', 'H.FJD', 'H.FLLS', 'H.GLCR', 'H.GULF', 'H.GYSR', 'H.HBR', 'H.LBED', 'H.LGN', 'H.LK', 'H.OCN',
+    'H.PND', 'H.RCH', 'H.RF', 'H.SD', 'H.SEA', 'H.SHOL', 'H.SPNG', 'H.SPNS', 'H.SPNT', 'H.STM', 'H.STRT', 'H.SWMP',
+    'L.AMUS', 'L.CLG', 'L.CMN', 'L.CST', 'L.OAS', 'L.PRK', 'L.QCKS', 'L.RES', 'L.RGNL', 'L.SNOW', 'L.TRB',
+    'P.PPL',
+    'S.AIRP', 'S.AMTH', 'S.ANS', 'S.ARCH', 'S.ART', 'S.ASTR', 'S.BCN', 'S.BDG', 'S.CAVE', 'S.CH', 'S.CSTL', 'S.GHSE',
+    'S.HSTS', 'S.HTL', 'S.LTHSE', 'S.MKT', 'S.MNMT', 'S.MSQE', 'S.MUS', 'S.PAL', 'S.PGDA', 'S.PYR', 'S.REST', 'S.RSRT',
+    'S.RUIN', 'S.SNTR', 'S.THTR', 'S.WALLA', 'S.ZOO',
+    'T.ATOL', 'T.BCH', 'T.CAPE', 'T.CFT', 'T.CLDA', 'T.CLF', 'T.CNYN', 'T.CRTR', 'T.DSRT', 'T.ERG', 'T.ISL', 'T.MESA',
+    'T.MT', 'T.PK', 'T.PLAT', 'T.PT', 'T.RDGE', 'T.RK', 'T.RKS', 'T.SAND', 'T.SINK', 'T.UPLD', 'T.VLC',
+    'U.CNSU', 'U.CNYU', 'U.MTU', 'U.PKSU', 'U.PKU', 'U.PLTU', 'U.RDGU', 'U.RDSU',
+    'V.FRST', 'V.GRSLD', 'V.GRVPN'
   ];
 
   // Остановился на H.STMX.
@@ -85,16 +94,22 @@ import { readFile, readdir, writeFile } from 'node:fs/promises'
           }
 
           // Населенные пункты, места, горы и т.д...
-          if (cyrillicPattern.test(data.name) && !data.featureCode.startsWith('ADM') && Object.hasOwn(regions, data.admin1Code)) {
-            regions[data.admin1Code].localities[data.name] = {
-              name: data.name,
-              lat: data.latitude,
-              lng: data.longitude,
-              feature_code: data.featureCode,
-              country_code: data.countryCode,
-            }
+          if (cyrillicPattern.test(data.name) && Object.hasOwn(regions, data.admin1Code)) {
+            const isAllowed = allowedFeatureCodes.filter((code) => {
+              return `${data.featureClass}.${data.featureCode}`.startsWith(code)
+            })
 
-            console.log('--- ' + data.name)
+            if (isAllowed?.length) {
+              regions[data.admin1Code].localities[data.name] = {
+                name: data.name,
+                lat: data.latitude,
+                lng: data.longitude,
+                feature_code: data.featureCode,
+                country_code: data.countryCode,
+              }
+
+              console.log('--- ' + data.name)
+            }
           }
         }
       }
