@@ -20,4 +20,23 @@ for await (const countryCode of countryCodes) {
       encoding: 'utf8'
     })
   )
+
+  database('places')
+    .where({
+      type:         'locality',
+      country_code: countryCode,
+      name:         country.capital.trim(),
+    })
+    .first(['id', 'name'])
+    .then((capital) => {
+      if (capital) {
+        database('places')
+          .where({
+            type: 'country',
+            country_code: countryCode,
+          })
+          .update('capital_id', capital.id)
+          .then(() => console.log(countryCode + ' - ' + capital.name))
+      }
+    })
 }
