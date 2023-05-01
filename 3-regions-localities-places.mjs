@@ -83,9 +83,11 @@ import { readFile, readdir, writeFile } from 'node:fs/promises'
           }
         }
 
-        data.name = data.name.replace('Край', 'край').replace('Область', 'область')
-
         if (data.featureCode) {
+          data.name = data.name
+            .replace('Край', 'край')
+            .replace('Область', 'область')
+
           // Регионы, штаты, области...
           if (data.featureCode === 'ADM1') {
             regions[data.admin1Code] = {
