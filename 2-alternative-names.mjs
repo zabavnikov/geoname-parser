@@ -13,7 +13,7 @@ import { writeFile } from 'node:fs/promises'
         row = row.split('\t')
 
         // Проверяем что название на русском.
-        if (row[2] === 'ru' && cyrillicPattern.test(row[3])) {
+        if (cyrillicPattern.test(row[3])) {
           data[row[1]] = row[3]
           console.log(`${row[1]}: ${row[3]}`)
         }

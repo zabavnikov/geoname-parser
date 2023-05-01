@@ -25,10 +25,14 @@ import { readFile, readdir, writeFile } from 'node:fs/promises'
   ]
 
   const allowedFeatureCodes = [
-    'H.BAY', 'H.BOG', 'H.FJD', 'H.FLLS', 'H.GLCR', 'H.GULF', 'H.GYSR', 'H.HBR', 'H.LBED', 'H.LGN', 'H.LK', 'H.OCN',
-    'H.PND', 'H.RCH', 'H.RF', 'H.SD', 'H.SEA', 'H.SHOL', 'H.SPNG', 'H.SPNS', 'H.SPNT', 'H.STM', 'H.STRT', 'H.SWMP',
-    'L.AMUS', 'L.CLG', 'L.CMN', 'L.CST', 'L.OAS', 'L.PRK', 'L.QCKS', 'L.RES', 'L.RGNL', 'L.SNOW', 'L.TRB',
+    // Населенные пункты.
     'P.PPL',
+
+    // Гидрографические.
+    'H.BAY', 'H.FJD', 'H.FLLS', 'H.GLCR', 'H.GULF', 'H.GYSR', 'H.HBR', 'H.LGN', 'H.LK', 'H.OCN',
+    'H.RF', 'H.SD', 'H.SEA', 'H.SPNG', 'H.SPNS', 'H.SPNT', 'H.STM', 'H.STRT', 'H.SWMP',
+
+    'L.AMUS', 'L.CLG', 'L.CMN', 'L.CST', 'L.OAS', 'L.PRK', 'L.QCKS', 'L.RES', 'L.RGNL', 'L.SNOW', 'L.TRB',
     'S.AIRP', 'S.AMTH', 'S.ANS', 'S.ARCH', 'S.ART', 'S.ASTR', 'S.BCN', 'S.BDG', 'S.CAVE', 'S.CH', 'S.CSTL', 'S.GHSE',
     'S.HSTS', 'S.HTL', 'S.LTHSE', 'S.MKT', 'S.MNMT', 'S.MSQE', 'S.MUS', 'S.PAL', 'S.PGDA', 'S.PYR', 'S.REST', 'S.RSRT',
     'S.RUIN', 'S.SNTR', 'S.THTR', 'S.WALLA', 'S.ZOO',
@@ -78,6 +82,8 @@ import { readFile, readdir, writeFile } from 'node:fs/promises'
             data.name = data.asciiName
           }
         }
+
+        data.name = data.name.replace('Край', 'край').replace('Область', 'область')
 
         if (data.featureCode) {
           // Регионы, штаты, области...
