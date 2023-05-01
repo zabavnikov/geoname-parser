@@ -83,7 +83,7 @@ import { readFile, readdir, writeFile } from 'node:fs/promises'
           }
         }
 
-        if (data.featureCode) {
+        if (data.featureCode && data.name) {
           data.name = data.name
             .replace('Край', 'край')
             .replace('Область', 'область')
@@ -103,11 +103,11 @@ import { readFile, readdir, writeFile } from 'node:fs/promises'
 
           // Населенные пункты, места, горы и т.д...
           if (cyrillicPattern.test(data.name) && Object.hasOwn(regions, data.admin1Code)) {
-            const isAllowed = allowedFeatureCodes.filter((code) => {
+            /*const isAllowed = allowedFeatureCodes.filter((code) => {
               return `${data.featureClass}.${data.featureCode}`.startsWith(code)
-            })
+            })*/
 
-            if (isAllowed?.length) {
+            if (! data.featureCode.startsWith('ADM')) {
               regions[data.admin1Code].localities[data.name] = {
                 name: data.name,
                 lat: data.latitude,
