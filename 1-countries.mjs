@@ -8,7 +8,6 @@ import { Buffer } from 'node:buffer'
     .then(async ({ geonames }) => {
       for await (const country of geonames) {
         const fields = {
-          continent_code: country.continent,
           capital: country.capital,
           country_code: country.countryCode,
           name: country.countryName,

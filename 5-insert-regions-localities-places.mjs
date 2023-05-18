@@ -58,7 +58,6 @@ database('places')
                   for await (const [_, localityData] of Object.entries(regionData.localities)) {
                     places.push({
                       country_code: region.country_code,
-                      feature_code: localityData.feature_code,
                       lat: localityData.lat,
                       lng: localityData.lng,
                       name: localityData.name,

@@ -23,7 +23,6 @@ for await (const countryCode of countryCodes) {
 
   await database('places')
     .insert({
-      continent_code: country.continent_code,
       country_code:   country.country_code,
       lat:            country.lat,
       lng:            country.lng,
